@@ -4,9 +4,6 @@
 #include <math.h>
 
 int primo(int p) {
-	if (p == 2) {
-		return 1;
-	}
 	if (p > 1) {
 		int i = 2;
 		while (i < p) {
@@ -31,52 +28,30 @@ int n_digitos(int x) {
 	return n;
 }
 
+int rotacao(int x) {
+	int ultimo = x % 10;
+	int rot = x/10 + ultimo * pow(10, n_digitos(x)-1);
+	return rot;
+}
+
 int main(void){
-	long k;
-	int count = 0;
-	
-	for (int i = 2; i < 1000000; i++) {
-	   	if (n_digitos(i) == 1 && primo(i) == 1) {
-	   		count++;
+	int count = 13; //numero de primos abaixo de 100
+	for (int i = 101; i < 1000000; i+=2) {
+	   	if (primo(i)) {
+	   		int flag = 1;
+	   		int rot = rotacao(i);
+	   		while (rot != i) {
+	   			if (!primo(rot)) {
+	   				flag = 0;
+	   				break;
+	   			}
+	   			rot = rotacao(rot);
+	   		}
+	   		if (flag) {
+	   			count++;
+	   		}
 	   	}
-		int k;
-	   	if (n_digitos(i) == 2 && primo(i) == 1) {
-	   		k = i;
-	   		int l = 10;
-			int t = k % l;
-			k /= l;
-			k += t*10;
-			if(primo(k) == 1) {
-				count++;
-			}
-	   	}
-	   	int digitos = n_digitos(i);
-	   	if (digitos > 2 && primo(i) == 1) {
-	   		printf("i: %d\n", i);
-	   		k = i;
-	   		int l = pow(10,digitos-1);
-			int t = k % l;
-			k /= l;
-			k += t*10;
-			printf("k: %d\n", k);
-			if(primo(k) == 1 && n_digitos(k) == digitos) {
-				for (int u = 1; u = fact(digitos); u++) {
-					int y = k;
-					int l = pow(10,digitos-1);
-					int t = k % l;
-					k /= l;
-					k += t*10;
-					if (primo(k) == 0) {
-						break;
-					}
-				}
-				count++;
-				printf("%d\n",count );
-			}
-	   	}
-	    
 	}
-	
 	printf("%d\n", count);
 }
 
